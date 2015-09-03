@@ -1,5 +1,7 @@
 VERSION=3.19.5
 LINUX=linux-$(VERSION)
+rooter?=NO
+menuconfig?=NO
 
 all::
 	@echo
@@ -56,7 +58,19 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	touch $@
 
-openwrt-kirkwood-ea3500-pri.ssa: .openwrt_luci
+.openwrt_options: .openwrt_luci
+    ifeq ($(rooter),YES)
+		@echo "Patching config with ROOter addons"
+		cp -r multiweb/rooter openwrt/package
+		cd openwrt && patch -p1 < ../patches/openwrt-
+		rooter.patch	
+	else ifeq ($(menuconfig),YES)
+		@echo "Showing user menuconfig"
+		cd openwrt && make menuconfig
+    endif
+	touch $@
+
+openwrt-kirkwood-ea3500-pri.ssa: .openwrt_options
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-3500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-pri.patch
@@ -68,7 +82,7 @@ openwrt-kirkwood-ea3500-pri.ssa: .openwrt_luci
 	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-pri.ssa
 
-openwrt-kirkwood-ea3500-alt.ssa: .openwrt_luci
+openwrt-kirkwood-ea3500-alt.ssa: .openwrt_options
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-3500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
@@ -80,7 +94,7 @@ openwrt-kirkwood-ea3500-alt.ssa: .openwrt_luci
 	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-alt.ssa
 
-openwrt-kirkwood-ea4500-pri.ssa: .openwrt_luci
+openwrt-kirkwood-ea4500-pri.ssa: .openwrt_options
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-pri.patch
@@ -92,7 +106,7 @@ openwrt-kirkwood-ea4500-pri.ssa: .openwrt_luci
 	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-pri.ssa
 
-openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
+openwrt-kirkwood-ea4500-alt.ssa: .openwrt_options
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
