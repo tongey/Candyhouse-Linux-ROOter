@@ -1,5 +1,6 @@
 VERSION=3.19.5
 LINUX=linux-$(VERSION)
+includerooter?=NO
 menuconfig?=NO
 
 all::
@@ -51,7 +52,13 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
 	git clone git://git.openwrt.org/15.05/openwrt.git
-    cp -r multiweb/rooter openwrt/package
+	ifeq ($(includerooter),YES)
+		@echo "Copying ROOter scripts into OpenWRT"
+		@echo "Note: You still need to add them in menuconfig, under Network"
+		cp -r multiweb/rooter openwrt/package
+		# Set to yes, so as to prompt user to actually add packages
+		menuconfig=YES
+	endif
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
