@@ -59,7 +59,7 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 	touch $@
 
 .openwrt_options: .openwrt_luci
-	ifeq ($(includerooter),YES)
+    ifeq ($(includerooter),YES)
 		@echo "Copying ROOter scripts into OpenWRT"
 		@echo "Note: You still need to add them in menuconfig, under Network"
 		cp -r multiweb/rooter openwrt/package
