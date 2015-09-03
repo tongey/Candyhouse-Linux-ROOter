@@ -1,6 +1,5 @@
 VERSION=3.19.5
 LINUX=linux-$(VERSION)
-rooter?=NO
 menuconfig?=NO
 
 all::
@@ -52,10 +51,7 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
 	git clone git://git.openwrt.org/15.05/openwrt.git
-	ifeq ($(rooter),YES)
-		@echo "Patching config with ROOter addons"
-		cp -r multiweb/rooter openwrt/package	
-    endif
+    cp -r multiweb/rooter openwrt/package
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
@@ -63,10 +59,7 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 	touch $@
 
 .openwrt_options: .openwrt_luci
-    ifeq ($(rooter),YES)
-		@echo "Patching config with ROOter addons"
-		cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch	
-	else ifeq ($(menuconfig),YES)
+    ifeq ($(menuconfig),YES)
 		@echo "Showing user menuconfig"
 		cd openwrt && make menuconfig
     endif
