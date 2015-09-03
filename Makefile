@@ -52,6 +52,10 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
 	git clone git://git.openwrt.org/15.05/openwrt.git
+	ifeq ($(rooter),YES)
+		@echo "Patching config with ROOter addons"
+		cp -r multiweb/rooter openwrt/package	
+    endif
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
@@ -61,8 +65,6 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 .openwrt_options: .openwrt_luci
     ifeq ($(rooter),YES)
 		@echo "Patching config with ROOter addons"
-		cp -r multiweb/rooter openwrt/package
-		cd openwrt && ./scripts/feeds update packages
 		cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch	
 	else ifeq ($(menuconfig),YES)
 		@echo "Showing user menuconfig"
