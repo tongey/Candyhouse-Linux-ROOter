@@ -62,8 +62,7 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
     ifeq ($(rooter),YES)
 		@echo "Patching config with ROOter addons"
 		cp -r multiweb/rooter openwrt/package
-		cd openwrt && patch -p1 < ../patches/openwrt-
-		rooter.patch	
+		cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch	
 	else ifeq ($(menuconfig),YES)
 		@echo "Showing user menuconfig"
 		cd openwrt && make menuconfig
