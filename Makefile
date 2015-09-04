@@ -86,7 +86,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	cp -r multiweb/rooter openwrt/package
 
 	# olddefconfig - Same as silentoldconfig but sets new symbols to their default value
-	cd openwrt && make olddefconfig
+	cd openwrt && make oldconfig
 
 	cd openwrt && make -j4 PACKAGES="$PACKAGES"
 	#@echo "Now running menuconfig"
