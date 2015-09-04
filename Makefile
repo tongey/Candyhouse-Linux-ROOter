@@ -17,6 +17,11 @@ PACKAGES="$PACKAGES ext-sms"
 PACKAGES="$PACKAGES ext-buttons"
 PACKAGES="$PACKAGES ext-command"
 
+#CONFIG_TARGET_BOARD="kirkwood"
+#CONFIG_TARGET_ARCH_PACKAGES="kirkwood"
+#CONFIG_DEFAULT_TARGET_OPTIMIZATION="-Os -pipe -march=armv5te -mtune=xscale"
+#CONFIG_CPU_TYPE="xscale"
+
 all::
 	@echo
 	@echo "Options:"
@@ -73,9 +78,9 @@ openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 	touch $@
 
 openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
-	#cd openwrt && patch -p1 < ../patches/openwrt.patch
-	#cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
-	#cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
+	cd openwrt && patch -p1 < ../patches/openwrt.patch
+	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
+	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
 
 	# No need to apply the patch is we manually run make menuconfig
 	#cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
@@ -86,16 +91,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	#
-	# configure
-	#
-	@echo "*** $1 *** MAKING INITIAL CONFIG"
-	if [ -e ".config" ]; then
-		make oldconfig
-	else
-		make defconfig
-	fi
-
+	cd openwrt && make oldconfig
 
 	cd openwrt && make -j4 PACKAGES="$PACKAGES"
 	#@echo "Now running menuconfig"
