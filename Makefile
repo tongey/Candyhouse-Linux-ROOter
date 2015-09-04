@@ -10,6 +10,7 @@ menuconfig?=NO
 #PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
 PACKAGES=""
 
+PACKAGES="$PACKAGES luci" 
 PACKAGES="$PACKAGES ext-rooter-basic" 
 PACKAGES="$PACKAGES ext-rooter8"
 PACKAGES="$PACKAGES ext-sms" 
@@ -72,9 +73,9 @@ openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 	touch $@
 
 openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
-	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
+	#cd openwrt && patch -p1 < ../patches/openwrt.patch
+	#cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
+	#cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
 
 	# No need to apply the patch is we manually run make menuconfig
 	#cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
@@ -85,8 +86,16 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	# olddefconfig - Same as silentoldconfig but sets new symbols to their default value
-	cd openwrt && make oldconfig
+	#
+	# configure
+	#
+	@echo "*** $1 *** MAKING INITIAL CONFIG"
+	if [ -e ".config" ]; then
+		make oldconfig
+	else
+		make defconfig
+	fi
+
 
 	cd openwrt && make -j4 PACKAGES="$PACKAGES"
 	#@echo "Now running menuconfig"
