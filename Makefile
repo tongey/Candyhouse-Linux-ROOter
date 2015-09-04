@@ -3,6 +3,7 @@ LINUX=linux-$(VERSION)
 includerooter?=NO
 menuconfig?=NO
 
+# From https://forum.openwrt.org/viewtopic.php?id=30897
 #
 # PACKAGES
 #
@@ -84,7 +85,8 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	#cd openwrt && make oldconfig 
+	# olddefconfig - Same as silentoldconfig but sets new symbols to their default value
+	cd openwrt && make olddefconfig
 
 	cd openwrt && make -j4 PACKAGES="$PACKAGES"
 	#@echo "Now running menuconfig"
