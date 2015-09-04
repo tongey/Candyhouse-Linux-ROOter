@@ -48,7 +48,7 @@ openwrt:: openwrt4500 openwrt3500
 
 openwrt3500:: openwrt-kirkwood-ea3500-pri.ssa openwrt-kirkwood-ea3500-alt.ssa
 
-openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
+openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
 	git clone git://git.openwrt.org/15.05/openwrt.git
@@ -58,68 +58,32 @@ openwrt4500:: openwrt-kirkwood-ea4500-pri.ssa openwrt-kirkwood-ea4500-alt.ssa
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	touch $@
 
-.openwrt_options: .openwrt_luci
-    ifeq ($(includerooter),YES)
-		@echo "Copying ROOter scripts into OpenWRT"
-		@echo "Note: You still need to add them in menuconfig, under Network"
-		cp -r multiweb/rooter openwrt/package
-		# Set to yes, so as to prompt user to actually add packages
-		menuconfig=YES
-    endif
-
-    ifeq ($(menuconfig),YES)
-		@echo "Showing user menuconfig"
-		cd openwrt && make menuconfig
-    endif
-	touch $@
-
-openwrt-kirkwood-ea3500-pri.ssa: .openwrt_options
-	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-3500.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-pri.patch
-	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
-	cd openwrt && make target/linux/clean
-	cd openwrt && make oldconfig && make -j4
-	cd openwrt && patch -p1 -R < ../patches/openwrt-pri.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt-3500.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-pri.ssa
-
-openwrt-kirkwood-ea3500-alt.ssa: .openwrt_options
-	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-3500.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
-	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
-	cd openwrt && make target/linux/clean
-	cd openwrt && make oldconfig && make -j4
-	cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt-3500.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-alt.ssa
-
-openwrt-kirkwood-ea4500-pri.ssa: .openwrt_options
-	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-pri.patch
-	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
-	cd openwrt && make target/linux/clean
-	cd openwrt && make oldconfig && make -j4
-	cd openwrt && patch -p1 -R < ../patches/openwrt-pri.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt-4500.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-pri.ssa
-
-openwrt-kirkwood-ea4500-alt.ssa: .openwrt_options
+openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
+	cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
 	cd openwrt && make target/linux/clean
-	cd openwrt && make oldconfig && make -j4
-	cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt-4500.patch
-	cd openwrt && patch -p1 -R < ../patches/openwrt.patch
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-alt.ssa
+
+
+	@echo "Copying ROOter scripts into OpenWRT"
+	cp -r multiweb/rooter openwrt/package
+
+	@echo "Showing user menuconfig"
+	cd openwrt && make oldconfig && make menuconfig
+
+	@echo "After configuring, you must build the image using the command:"
+	@echo "cd openwrt && make -j4"
+
+	@echo "Then check that your image exists here:"
+	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
+
+	#cd openwrt && make oldconfig && make -j4
+	#cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
+	#cd openwrt && patch -p1 -R < ../patches/openwrt-4500.patch
+	#cd openwrt && patch -p1 -R < ../patches/openwrt.patch
+	#cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-alt.ssa
 
 usb-clean::
 	rm -rf .usb_extracted .usb_patched .usb_configured .usb_built $(LINUX) uImage-$(VERSION)-ea4500
