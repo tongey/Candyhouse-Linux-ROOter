@@ -3,6 +3,18 @@ LINUX=linux-$(VERSION)
 includerooter?=NO
 menuconfig?=NO
 
+#
+# PACKAGES
+#
+#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
+PACKAGES=""
+
+PACKAGES="$PACKAGES ext-rooter-basic" 
+PACKAGES="$PACKAGES ext-rooter8"
+PACKAGES="$PACKAGES ext-sms" 
+PACKAGES="$PACKAGES ext-buttons"
+PACKAGES="$PACKAGES ext-command"
+
 all::
 	@echo
 	@echo "Options:"
@@ -62,6 +74,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
+
 	# No need to apply the patch is we manually run make menuconfig
 	#cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
@@ -73,8 +86,9 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 
 	#cd openwrt && make oldconfig 
 
-	@echo "Now running menuconfig"
-	cd openwrt && make menuconfig
+	cd openwrt && make -j4 PACKAGES="$PACKAGES"
+	#@echo "Now running menuconfig"
+	#cd openwrt && make menuconfig
 
 	@echo "After configuring, you must build the image using the command:"
 	@echo "cd openwrt && make -j4"
