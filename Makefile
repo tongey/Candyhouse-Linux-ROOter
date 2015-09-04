@@ -62,16 +62,19 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
+	# No need to apply the patch is we manually run make menuconfig
+	#cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
 	cd openwrt && make target/linux/clean
 
-
+	# Maybe change this to download from repo. Can't find it though.
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	@echo "Showing user menuconfig"
-	cd openwrt && make oldconfig && make menuconfig
+	#cd openwrt && make oldconfig 
+
+	@echo "Now running menuconfig"
+	cd openwrt && make menuconfig
 
 	@echo "After configuring, you must build the image using the command:"
 	@echo "cd openwrt && make -j4"
@@ -79,11 +82,9 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
 
-	#cd openwrt && make oldconfig && make -j4
-	#cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
-	#cd openwrt && patch -p1 -R < ../patches/openwrt-4500.patch
-	#cd openwrt && patch -p1 -R < ../patches/openwrt.patch
-	#cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-alt.ssa
+	# I created a diff using the command
+	# 
+	# diff -ruN a/.config b/.config > rooter.patch
 
 usb-clean::
 	rm -rf .usb_extracted .usb_patched .usb_configured .usb_built $(LINUX) uImage-$(VERSION)-ea4500
