@@ -91,7 +91,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	cd openwrt && make oldconfig
+	cd openwrt && yes "" | make oldconfig
 
 	cd openwrt && make -j4 PACKAGES="$PACKAGES"
 	#@echo "Now running menuconfig"
