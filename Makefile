@@ -51,7 +51,7 @@ openwrt3500:: openwrt-kirkwood-ea3500-pri.ssa openwrt-kirkwood-ea3500-alt.ssa
 openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
-	git clone git://git.openwrt.org/15.05/openwrt.git
+	git clone git://git.openwrt.org/15.05-rc3/openwrt.git
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
@@ -72,11 +72,11 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	cd openwrt && yes "" | make oldconfig
-
+	#cd openwrt && yes "" | make oldconfig
+	cd openwrt && make menuconfig
 
 	# From https://forum.openwrt.org/viewtopic.php?id=30897
-	#
+	# Only avaiable with OpemWRT ImageBuilder compiles
 	# PACKAGES
 	#
 	#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
@@ -91,9 +91,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 
 	@echo "$PACKAGES"
 
-	cd openwrt && make -j4 PACKAGES="$PACKAGES"
-	
-
+	#cd openwrt && make -j4 PACKAGES="$PACKAGES"
 
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
