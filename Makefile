@@ -3,25 +3,6 @@ LINUX=linux-$(VERSION)
 includerooter?=NO
 menuconfig?=NO
 
-# From https://forum.openwrt.org/viewtopic.php?id=30897
-#
-# PACKAGES
-#
-#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
-PACKAGES=""
-
-PACKAGES="$PACKAGES luci" 
-PACKAGES="$PACKAGES ext-rooter-basic" 
-PACKAGES="$PACKAGES ext-rooter8"
-PACKAGES="$PACKAGES ext-sms" 
-PACKAGES="$PACKAGES ext-buttons"
-PACKAGES="$PACKAGES ext-command"
-
-#CONFIG_TARGET_BOARD="kirkwood"
-#CONFIG_TARGET_ARCH_PACKAGES="kirkwood"
-#CONFIG_DEFAULT_TARGET_OPTIMIZATION="-Os -pipe -march=armv5te -mtune=xscale"
-#CONFIG_CPU_TYPE="xscale"
-
 all::
 	@echo
 	@echo "Options:"
@@ -93,12 +74,26 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 
 	cd openwrt && yes "" | make oldconfig
 
-	cd openwrt && make -j4 PACKAGES="$PACKAGES"
-	#@echo "Now running menuconfig"
-	#cd openwrt && make menuconfig
 
-	@echo "After configuring, you must build the image using the command:"
-	@echo "cd openwrt && make -j4"
+	# From https://forum.openwrt.org/viewtopic.php?id=30897
+	#
+	# PACKAGES
+	#
+	#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
+	PACKAGES=""
+
+	PACKAGES="$PACKAGES luci" 
+	PACKAGES="$PACKAGES ext-rooter-basic" 
+	PACKAGES="$PACKAGES ext-rooter8"
+	PACKAGES="$PACKAGES ext-sms" 
+	PACKAGES="$PACKAGES ext-buttons"
+	PACKAGES="$PACKAGES ext-command"
+
+	@echo "$PACKAGES"
+
+	cd openwrt && make -j4 PACKAGES="$PACKAGES"
+	
+
 
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
