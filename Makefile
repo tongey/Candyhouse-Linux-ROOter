@@ -88,17 +88,20 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Recommended that you select the following to install: $(PACKAGES)"
 
 
-	#cd openwrt && yes "" | make oldconfig
-	cd openwrt && make menuconfig
+	cd openwrt && yes "" | make oldconfig
+	#cd openwrt && make menuconfig
 
-	#cd openwrt && make -j4 PACKAGES="$PACKAGES"
+	# Apply rooter patches
+	cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
+
+	cd openwrt && make -j4"
 
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
 
 	# I created a diff using the command
 	# 
-	# diff -ruN a/.config b/.config > rooter.patch
+	# diff -ruN a/.config b/.config > ../patches/openwrt-rooter.patch
 
 usb-clean::
 	rm -rf .usb_extracted .usb_patched .usb_configured .usb_built $(LINUX) uImage-$(VERSION)-ea4500
