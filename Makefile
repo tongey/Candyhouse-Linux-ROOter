@@ -94,7 +94,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	# Apply rooter patches
 	cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
 
-	cd openwrt && make -j4"
+	cd openwrt && make -j4
 
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
