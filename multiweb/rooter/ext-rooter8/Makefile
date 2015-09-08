@@ -13,7 +13,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/ext-rooter8
   SECTION:=utils
   CATEGORY:=Network
-  DEPENDS:=+luci-app-qos +luci-app-ddns +luci-proto-relayd +luci-app-wshaper
+  DEPENDS:=+luci-app-ddns +luci-proto-relayd
   TITLE:=support for rooter8
   PKGARCH:=all
 endef

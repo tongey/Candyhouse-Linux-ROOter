@@ -51,7 +51,7 @@ openwrt3500:: openwrt-kirkwood-ea3500-pri.ssa openwrt-kirkwood-ea3500-alt.ssa
 openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
-	git clone git://git.openwrt.org/15.05-rc3/openwrt.git
+	git clone git://git.openwrt.org/15.05/openwrt.git
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
@@ -72,24 +72,24 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Copying ROOter scripts into OpenWRT"
 	cp -r multiweb/rooter openwrt/package
 
-	#cd openwrt && yes "" | make oldconfig
-	cd openwrt && make menuconfig
-
 	# From https://forum.openwrt.org/viewtopic.php?id=30897
 	# Only avaiable with OpemWRT ImageBuilder compiles
 	# PACKAGES
 	#
 	#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
-	PACKAGES=""
 
-	PACKAGES="$PACKAGES luci" 
-	PACKAGES="$PACKAGES ext-rooter-basic" 
-	PACKAGES="$PACKAGES ext-rooter8"
-	PACKAGES="$PACKAGES ext-sms" 
-	PACKAGES="$PACKAGES ext-buttons"
-	PACKAGES="$PACKAGES ext-command"
+	PACKAGES="luci" 
+	PACKAGES="$(PACKAGES) ext-rooter" 
+	PACKAGES="$(PACKAGES) ext-rooter8"
+	PACKAGES="$(PACKAGES) ext-sms" 
+	PACKAGES="$(PACKAGES) ext-buttons"
+	PACKAGES="$(PACKAGES) ext-command"
 
-	@echo "$PACKAGES"
+	@echo "Recommended that you select the following to install: $(PACKAGES)"
+
+
+	#cd openwrt && yes "" | make oldconfig
+	cd openwrt && make menuconfig
 
 	#cd openwrt && make -j4 PACKAGES="$PACKAGES"
 
