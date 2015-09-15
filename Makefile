@@ -36,13 +36,13 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 
-	cd openwrt && make defconfig
-	cd openwrt && ./scripts/feeds update -a 
-
 	touch $@
 
 .openwrt_luci: .openwrt_rooter
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
+
+	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
+	
 	touch $@
 
 openwrt-kirkwood-ea4500: .openwrt_luci
@@ -52,9 +52,8 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	@echo "Your image is here:"
-	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin"
-
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin .
+	cp openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar .
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
@@ -63,8 +62,8 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	@echo "Your image is here:"
-	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-factory.bin"
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-factory.bin .
+	cp openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar .
 
 
 usb-clean::
@@ -74,7 +73,7 @@ usb-distclean: usb-clean
 	rm -rf $(LINUX).tar.xz .usb*
 
 openwrt-clean::
-	rm -rf *.ssa *.bin
+	rm -rf *.ssa *.bin *.tar
 
 openwrt-distclean: openwrt-clean
 	rm -rf openwrt/ .openwrt*
