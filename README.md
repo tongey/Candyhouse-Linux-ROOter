@@ -17,8 +17,8 @@ The included [Makefile](Makefile) will clone the kirkwood branch of OpenWRT, and
 
 A tar file is also created to allow system upgrades from an older flashed version (to maintain config).
 
-For more info and discussion about OpenWRT on Candyhouse routers, please see the discussions here:
-http://www.wolfteck.com/projects/candyhouse/openwrt/
+For more info and discussion about OpenWRT on Candyhouse routers, please see the discussions [here](http://www.wolfteck.com/projects/candyhouse/openwrt/):
+
 
 For more info and discussion about ROOter OpenWRT extensions, please visit:
 
