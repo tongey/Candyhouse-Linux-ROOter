@@ -44,11 +44,9 @@ usb:: .usb_built
 	mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n $(LINUX) -d /tmp/zImage+kirkwood-candyhouse.dtb uImage-$(VERSION)-ea4500
 	touch $@
 
-openwrt:: openwrt4500 openwrt3500
+openwrt:: openwrt4500 
 
-openwrt3500:: openwrt-kirkwood-ea3500-pri.ssa openwrt-kirkwood-ea3500-alt.ssa
-
-openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
+openwrt4500:: openwrt-kirkwood-ea4500
 
 .openwrt_fetched:
 	#git clone git://git.openwrt.org/15.05/openwrt.git
@@ -61,22 +59,22 @@ openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 	cd openwrt-staging && yes "" | make oldconfig
 
-	cd openwrt-staging && ./scripts/feeds install ext-rooter -p rooter
-	cd openwrt-staging && ./scripts/feeds install ext-rooter8 -p rooter
-	cd openwrt-staging && ./scripts/feeds install ext-sms -p rooter
-	cd openwrt-staging && ./scripts/feeds install ext-buttons -p rooter
-	cd openwrt-staging && ./scripts/feeds install ext-command -p rooter
+	cd openwrt-staging && ./scripts/feeds install ext-rooter
+	cd openwrt-staging && ./scripts/feeds install ext-rooter8
+	cd openwrt-staging && ./scripts/feeds install ext-sms
+	cd openwrt-staging && ./scripts/feeds install ext-buttons
+	cd openwrt-staging && ./scripts/feeds install ext-command
 	touch $@
 
 .openwrt_luci: .openwrt_rooter
 	cd openwrt-staging && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	touch $@
 
-openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
+openwrt-kirkwood-ea4500: .openwrt_luci
 
 	cd openwrt-staging && make target/linux/clean
 
-	#cd openwrt-staging && yes "" | make oldconfig
+	cd openwrt-staging && yes "" | make oldconfig
 	#cd openwrt-staging && make menuconfig
 
 	# Apply rooter patches
