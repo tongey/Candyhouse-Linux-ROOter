@@ -2,7 +2,7 @@
 
 _Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys EA4500, E4200v2, and EA3500 WiFi routers.  
 
-# Building OpenWRT images
+## Building OpenWRT images
 
 Build OpenWRT firmware images with minimal ROOter extensions for EA4500 / E4200v2
 ```bash
@@ -28,11 +28,11 @@ For more info and discussion about ROOter OpenWRT extensions, please visit:
 
 You can flash the original Linksys stock firmware from within the OpenWRT interface.
 
-# Building / Installing Modules
+## Building / Installing Modules
 
 No need.  All required functions are built into the kernel image.  No more mounting your router FS to you build box!
 
-# Cleaning Up
+## Cleaning Up
 
 ```bash
 $ make clean
