@@ -64,19 +64,13 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cp openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar .
 
 
-usb-clean::
-	rm -rf .usb_extracted .usb_patched .usb_configured .usb_built $(LINUX) uImage-$(VERSION)-ea4500
-
-usb-distclean: usb-clean
-	rm -rf $(LINUX).tar.xz .usb*
-
 openwrt-clean::
 	rm -rf *.ssa *.bin *.tar
 
 openwrt-distclean: openwrt-clean
 	rm -rf openwrt/ .openwrt*
 
-clean: usb-clean openwrt-clean
+clean: openwrt-clean
 
-distclean: usb-distclean openwrt-distclean
+distclean: openwrt-distclean
 
