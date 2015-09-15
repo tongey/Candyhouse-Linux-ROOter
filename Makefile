@@ -58,16 +58,13 @@ openwrt4500:: openwrt-kirkwood-ea4500
 
 	cd openwrt-staging && ./scripts/feeds update -a 
 
-	@echo CONFIG_TARGET_kirkwood=y > openwrt-staging/.config
-	@echo CONFIG_TARGET_kirkwood_EA4500=y >> openwrt-staging/.config
 
-	cd openwrt-staging && make defconfig
+	@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt-staging/.config
+	@echo CONFIG_PACKAGE_ext-command=y >> openwrt-staging/.config
+	@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt-staging/.config
+	@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt-staging/.config
+	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt-staging/.config
 
-	cd openwrt-staging && ./scripts/feeds install ext-rooter
-	cd openwrt-staging && ./scripts/feeds install ext-rooter8
-	cd openwrt-staging && ./scripts/feeds install ext-sms
-	cd openwrt-staging && ./scripts/feeds install ext-buttons
-	cd openwrt-staging && ./scripts/feeds install ext-command
 	touch $@
 
 .openwrt_luci: .openwrt_rooter
@@ -76,13 +73,10 @@ openwrt4500:: openwrt-kirkwood-ea4500
 
 openwrt-kirkwood-ea4500: .openwrt_luci
 
-	#cd openwrt-staging && make target/linux/clean
+	@echo CONFIG_TARGET_kirkwood=y > openwrt-staging/.config
+	@echo CONFIG_TARGET_kirkwood_EA4500=y >> openwrt-staging/.config
 
 	cd openwrt-staging && make defconfig
-	#cd openwrt-staging && make menuconfig
-
-	# Apply rooter patches
-	#cd openwrt-staging && patch -p1 < ../patches/openwrt-rooter.patch
 
 	cd openwrt-staging && make -j4
 
