@@ -51,7 +51,7 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	cd openwrt && make -j4
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin .
-	cp openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar .
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar .
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
@@ -61,7 +61,7 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cd openwrt && make -j4
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-factory.bin .
-	cp openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar .
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar .
 
 
 openwrt-clean::
