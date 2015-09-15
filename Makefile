@@ -51,26 +51,31 @@ openwrt3500:: openwrt-kirkwood-ea3500-pri.ssa openwrt-kirkwood-ea3500-alt.ssa
 openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_fetched:
-	git clone git://git.openwrt.org/15.05/openwrt.git
+	#git clone git://git.openwrt.org/15.05/openwrt.git
+	git clone -b kirkwood-squashfs https://github.com/leitec/openwrt-staging
 	touch $@
 
 .openwrt_luci: .openwrt_fetched
-	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
+	cd openwrt-staging && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	touch $@
 
-openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
-	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
+.openwrt_rooter: .openwrt_luci
+	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
+	cd openwrt-staging && ./scripts/feeds update packages rooter
+	cd openwrt-staging && ./scripts/feeds install ext-rooter
+	cd openwrt-staging && ./scripts/feeds install ext-rooter8
+	cd openwrt-staging && ./scripts/feeds install ext-sms
+	cd openwrt-staging && ./scripts/feeds install ext-buttons
+	cd openwrt-staging && ./scripts/feeds install ext-command
+	touch $@
 
-	# No need to apply the patch is we manually run make menuconfig
-	#cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
-	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
-	cd openwrt && make target/linux/clean
+openwrt-kirkwood-ea4500-alt.ssa: .openwrt_rooter
+
+	cd openwrt-staging && make target/linux/clean
 
 	# Maybe change this to download from repo. Can't find it though.
-	@echo "Copying ROOter scripts into OpenWRT"
-	cp -r multiweb/rooter openwrt/package
+	#@echo "Copying ROOter scripts into OpenWRT"
+	#cp -r multiweb/rooter openwrt-staging/package
 
 	# From https://forum.openwrt.org/viewtopic.php?id=30897
 	# Only avaiable with OpemWRT ImageBuilder compiles
@@ -88,16 +93,16 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 	@echo "Recommended that you select the following to install: $(PACKAGES)"
 
 
-	cd openwrt && yes "" | make oldconfig
-	#cd openwrt && make menuconfig
+	#cd openwrt-staging && yes "" | make oldconfig
+	#cd openwrt-staging && make menuconfig
 
 	# Apply rooter patches
-	cd openwrt && patch -p1 < ../patches/openwrt-rooter.patch
+	#cd openwrt-staging && patch -p1 < ../patches/openwrt-rooter.patch
 
-	cd openwrt && make -j4
+	#cd openwrt-staging && make -j4
 
 	@echo "Then check that your image exists here:"
-	@echo "ls -l openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa"
+	@echo "ls -l openwrt-staging/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin"
 
 	# I created a diff using the command
 	# 
