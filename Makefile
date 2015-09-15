@@ -61,6 +61,7 @@ openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 
 .openwrt_rooter: .openwrt_luci
 	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
+	cd openwrt-staging && ./scripts/feeds update -a
 	cd openwrt-staging && ./scripts/feeds update packages rooter
 	cd openwrt-staging && ./scripts/feeds install ext-rooter
 	cd openwrt-staging && ./scripts/feeds install ext-rooter8
