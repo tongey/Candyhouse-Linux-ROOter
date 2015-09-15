@@ -26,7 +26,6 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
 
 	@echo "" > openwrt/.config	
-	@echo CONFIG_TARGET_kirkwood=y >> openwrt/.config
 
 	@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
@@ -45,6 +44,7 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 openwrt-kirkwood-ea4500: .openwrt_luci
 
+	@echo CONFIG_TARGET_kirkwood=y >> openwrt/.config
 	@echo CONFIG_TARGET_kirkwood_EA4500=y >> openwrt/.config
 
 	cd openwrt && make defconfig
@@ -55,6 +55,7 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
+	@echo CONFIG_TARGET_kirkwood=y >> openwrt/.config
 	@echo CONFIG_TARGET_kirkwood_EA3500=y >> openwrt/.config
 
 	cd openwrt && make defconfig
