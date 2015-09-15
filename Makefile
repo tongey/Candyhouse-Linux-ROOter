@@ -55,9 +55,13 @@ openwrt4500:: openwrt-kirkwood-ea4500
 
 .openwrt_rooter: .openwrt_fetched
 	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
-	cd openwrt-staging && ./scripts/feeds update -a
 
-	cd openwrt-staging && yes "" | make oldconfig
+	cd openwrt-staging && ./scripts/feeds update packages rooter 
+
+	cd openwrt-staging && @echo CONFIG_TARGET_kirkwood=y > .config
+	cd openwrt-staging && @echo CONFIG_TARGET_kirkwood_EA4500=y >> .config
+
+	cd openwrt-staging && make defconfig
 
 	cd openwrt-staging && ./scripts/feeds install ext-rooter
 	cd openwrt-staging && ./scripts/feeds install ext-rooter8
@@ -72,9 +76,9 @@ openwrt4500:: openwrt-kirkwood-ea4500
 
 openwrt-kirkwood-ea4500: .openwrt_luci
 
-	cd openwrt-staging && make target/linux/clean
+	#cd openwrt-staging && make target/linux/clean
 
-	cd openwrt-staging && yes "" | make oldconfig
+	cd openwrt-staging && make defconfig
 	#cd openwrt-staging && make menuconfig
 
 	# Apply rooter patches
