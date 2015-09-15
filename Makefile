@@ -5,12 +5,10 @@ all::
 	@echo
 	@echo "Options:"
 	@echo
-	@echo "make openwrt\t\tBuilds OpenWRT firmware images for EA4500 / E4200v2 and EA3500"
-	@echo "make openwrt4500\tBuilds OpenWRT firmware images for EA4500 / E4200v2"
-	@echo "make openwrt3500\tBuilds OpenWRT firmware images for EA3500"
+	@echo "make openwrt4500\tBuilds OpenWRT firmware images with minimal ROOter extensions for EA4500 / E4200v2"
+	@echo "make openwrt3500\tBuilds OpenWRT firmware images with minimal ROOter extensions for EA3500"
 	@echo
 
-openwrt:: openwrt4500 openwrt3500
 
 openwrt4500:: openwrt-kirkwood-ea4500
 
