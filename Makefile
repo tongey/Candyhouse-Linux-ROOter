@@ -56,10 +56,10 @@ openwrt4500:: openwrt-kirkwood-ea4500
 .openwrt_rooter: .openwrt_fetched
 	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
 
-	cd openwrt-staging && ./scripts/feeds update packages rooter 
+	cd openwrt-staging && ./scripts/feeds update -a 
 
-	cd openwrt-staging && @echo CONFIG_TARGET_kirkwood=y > .config
-	cd openwrt-staging && @echo CONFIG_TARGET_kirkwood_EA4500=y >> .config
+	@echo CONFIG_TARGET_kirkwood=y > openwrt-staging/.config
+	@echo CONFIG_TARGET_kirkwood_EA4500=y >> openwrt-staging/.config
 
 	cd openwrt-staging && make defconfig
 
