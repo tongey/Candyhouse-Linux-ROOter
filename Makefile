@@ -55,44 +55,26 @@ openwrt4500:: openwrt-kirkwood-ea4500-alt.ssa
 	git clone -b kirkwood-squashfs https://github.com/leitec/openwrt-staging
 	touch $@
 
-.openwrt_luci: .openwrt_fetched
+.openwrt_rooter: .openwrt_fetched
+	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
+	cd openwrt-staging && ./scripts/feeds update -a
+
+	cd openwrt-staging && yes "" | make oldconfig
+
+	cd openwrt-staging && ./scripts/feeds install ext-rooter -p rooter
+	cd openwrt-staging && ./scripts/feeds install ext-rooter8 -p rooter
+	cd openwrt-staging && ./scripts/feeds install ext-sms -p rooter
+	cd openwrt-staging && ./scripts/feeds install ext-buttons -p rooter
+	cd openwrt-staging && ./scripts/feeds install ext-command -p rooter
+	touch $@
+
+.openwrt_luci: .openwrt_rooter
 	cd openwrt-staging && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	touch $@
 
-.openwrt_rooter: .openwrt_luci
-	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt-staging/feeds.conf.default
-	cd openwrt-staging && ./scripts/feeds update -a
-	cd openwrt-staging && ./scripts/feeds update packages rooter
-	cd openwrt-staging && ./scripts/feeds install ext-rooter
-	cd openwrt-staging && ./scripts/feeds install ext-rooter8
-	cd openwrt-staging && ./scripts/feeds install ext-sms
-	cd openwrt-staging && ./scripts/feeds install ext-buttons
-	cd openwrt-staging && ./scripts/feeds install ext-command
-	touch $@
-
-openwrt-kirkwood-ea4500-alt.ssa: .openwrt_rooter
+openwrt-kirkwood-ea4500-alt.ssa: .openwrt_luci
 
 	cd openwrt-staging && make target/linux/clean
-
-	# Maybe change this to download from repo. Can't find it though.
-	#@echo "Copying ROOter scripts into OpenWRT"
-	#cp -r multiweb/rooter openwrt-staging/package
-
-	# From https://forum.openwrt.org/viewtopic.php?id=30897
-	# Only avaiable with OpemWRT ImageBuilder compiles
-	# PACKAGES
-	#
-	#PACKAGES=$(wget -qO - http://backfire.openwrt.org/$TARGET/OpenWrt.config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip' | tr -d '\n')
-
-	PACKAGES="luci" 
-	PACKAGES="$(PACKAGES) ext-rooter" 
-	PACKAGES="$(PACKAGES) ext-rooter8"
-	PACKAGES="$(PACKAGES) ext-sms" 
-	PACKAGES="$(PACKAGES) ext-buttons"
-	PACKAGES="$(PACKAGES) ext-command"
-
-	@echo "Recommended that you select the following to install: $(PACKAGES)"
-
 
 	#cd openwrt-staging && yes "" | make oldconfig
 	#cd openwrt-staging && make menuconfig
@@ -100,7 +82,7 @@ openwrt-kirkwood-ea4500-alt.ssa: .openwrt_rooter
 	# Apply rooter patches
 	#cd openwrt-staging && patch -p1 < ../patches/openwrt-rooter.patch
 
-	#cd openwrt-staging && make -j4
+	cd openwrt-staging && make -j4
 
 	@echo "Then check that your image exists here:"
 	@echo "ls -l openwrt-staging/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin"
