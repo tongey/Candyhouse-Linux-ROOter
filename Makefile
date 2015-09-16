@@ -30,7 +30,7 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 
 	touch $@
@@ -39,7 +39,7 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 
 	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
-	
+	@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
 	touch $@
 
 openwrt-kirkwood-ea4500: .openwrt_luci
