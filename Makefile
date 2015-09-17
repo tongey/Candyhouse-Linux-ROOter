@@ -21,17 +21,21 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	touch $@
 
 .openwrt_rooter: .openwrt_fetched
-	cp openwrt/feeds.conf.default openwrt/feeds.conf
-	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
-	cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
-
 	@echo "" > openwrt/.config	
 
-	@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
+	#cp openwrt/feeds.conf.default openwrt/feeds.conf
+	#@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
+	#cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
+
+	# Only basic
+	#@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
+
+	#@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
+
 
 	touch $@
 
@@ -50,8 +54,8 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin .
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar .
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin openwrt-ea4500-factory.bin 
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar openwrt-ea4500-sysupgrade.tar 
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
@@ -61,8 +65,8 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-factory.bin .
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar .
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-factory.bin openwrt-ea3500-factory.bin
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500-squashfs-sysupgrade.tar openwrt-ea3500-sysupgrade.tar
 
 
 openwrt-clean::
@@ -71,7 +75,7 @@ openwrt-clean::
 openwrt-distclean: openwrt-clean
 	rm -rf openwrt/ .openwrt*
 
-clean: openwrt-clean
+clean: openwrt-clean openwrt-distclean
 
 distclean: openwrt-distclean
 
