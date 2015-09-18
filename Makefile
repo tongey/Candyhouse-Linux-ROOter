@@ -23,12 +23,13 @@ openwrt3500:: openwrt-kirkwood-ea3500
 .openwrt_rooter: .openwrt_fetched
 	@echo "" > openwrt/.config	
 
-	#cp openwrt/feeds.conf.default openwrt/feeds.conf
-	#@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
-	#cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
+	cp openwrt/feeds.conf.default openwrt/feeds.conf
+	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
+	cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
 
-	# Only basic
-	#@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
+	# Only finbarr basic packages. No ROOter MODs.
+	@echo CONFIG_PACKAGE_ext-modem-basic=y >> openwrt/.config
+	@echo CONFIG_PACKAGE_ext-finbarr-addons=y >> openwrt/.config
 
 	#@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
@@ -36,14 +37,13 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	#@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
 
-
 	touch $@
 
 .openwrt_luci: .openwrt_rooter
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 
-	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
 	touch $@
 
 openwrt-kirkwood-ea4500: .openwrt_luci
