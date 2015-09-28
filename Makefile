@@ -25,11 +25,18 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 	cp openwrt/feeds.conf.default openwrt/feeds.conf
 	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
-	cd openwrt && ./scripts/feeds update packages rooter && ./scripts/feeds install -a -p rooter
+	@echo "src-git obsy https://github.com/obsy/packages.git" >> openwrt/feeds.conf
+
+	cd openwrt && ./scripts/feeds update packages rooter obsy && ./scripts/feeds install -a -p rooter
+	cd openwrt && ./scripts/feeds install -a -p obsy
 
 	# Only finbarr basic packages. No ROOter MODs.
-	@echo CONFIG_PACKAGE_ext-modem-basic=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-modem-basic=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-finbarr-addons=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-huawei-modems=y >> openwrt/.config
+
+	# Huawei drivers. See https://lists.openwrt.org/pipermail/openwrt-devel/2015-July/033998.html
+	@echo CONFIG_PACKAGE_kmod-huawei-hw-cdc=y >> openwrt/.config
 
 	#@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
