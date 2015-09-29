@@ -20,38 +20,36 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	
 	touch $@
 
-.openwrt_rooter: .openwrt_fetched
+.openwrt_config: .openwrt_fetched
 	@echo "" > openwrt/.config	
 
 	cp openwrt/feeds.conf.default openwrt/feeds.conf
 	@echo "src-git rooter https://github.com/fbradyirl/rooter.git" >> openwrt/feeds.conf
-	@echo "src-git obsy https://github.com/obsy/packages.git" >> openwrt/feeds.conf
 
-	cd openwrt && ./scripts/feeds update packages rooter obsy && ./scripts/feeds install -a -p rooter
-	cd openwrt && ./scripts/feeds install -a -p obsy
+	cd openwrt && ./scripts/feeds update rooter && ./scripts/feeds install -a -p rooter
 
 	# Only finbarr basic packages. No ROOter MODs.
 	@echo CONFIG_PACKAGE_ext-finbarr-addons=y >> openwrt/.config
 	
+	@echo CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=y >> openwrt/.config
+
 	# 1. Only generic basic modem packages. No ROOter MODs.
 	#@echo CONFIG_PACKAGE_ext-modem-basic=y >> openwrt/.config
 
 	# 2. Only huawei basic modem packages. No ROOter MODs.
 	#@echo CONFIG_PACKAGE_ext-huawei-modems=y >> openwrt/.config
 
-	# 3. Huawei drivers. No ROOter MODs. See https://lists.openwrt.org/pipermail/openwrt-devel/2015-July/033998.html
-	#@echo CONFIG_PACKAGE_kmod-huawei-hw-cdc=y >> openwrt/.config
-
 	# 4. All the ROOter stuff
+	@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
 
 	touch $@
 
-.openwrt_luci: .openwrt_rooter
+.openwrt_luci: .openwrt_config
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 
 	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
