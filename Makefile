@@ -16,8 +16,8 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 .openwrt_fetched:
 	#git clone git://git.openwrt.org/15.05/openwrt.git
-	git clone -b kirkwood-squashfs https://github.com/leitec/openwrt-staging openwrt
-	
+	#git clone -b kirkwood-squashfs https://github.com/leitec/openwrt-staging openwrt
+	git clone -b kirkwood-linksys https://github.com/leitec/openwrt-staging openwrt
 	touch $@
 
 .openwrt_config: .openwrt_fetched
@@ -62,7 +62,7 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	@echo CONFIG_TARGET_kirkwood_EA4500=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j4
+	cd openwrt && make -j1 V=s
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-factory.bin openwrt-ea4500-factory.bin 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500-squashfs-sysupgrade.tar openwrt-ea4500-sysupgrade.tar 
