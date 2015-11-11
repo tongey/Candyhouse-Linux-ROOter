@@ -38,9 +38,10 @@ openwrt3500:: openwrt-kirkwood-ea3500
 	@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 
-	@echo CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=y >> openwrt/.config
+	# Support for Marvell chipset wifi driver
+	@echo CONFIG_PACKAGE_kmod-mwl8k=y >> openwrt/.config
 
-	# These arent really needed
+	# These ROOter packages arent really needed
 	#@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
