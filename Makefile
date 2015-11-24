@@ -51,6 +51,9 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 .openwrt_luci: .openwrt_config
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
+	cd openwrt && ./scripts/feeds update packages packages && ./scripts/feeds install -a -p packages
+
+	@echo CONFIG_PACKAGE_luci-app-sqm=y >> openwrt/.config
 
 	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
 	#@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
@@ -62,7 +65,7 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	@echo CONFIG_TARGET_kirkwood_VIPER=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j4
+	cd openwrt && make -j1 V=s
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-factory.bin . 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-sysupgrade.tar .
