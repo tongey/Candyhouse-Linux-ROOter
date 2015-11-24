@@ -13,12 +13,11 @@ Build OpenWRT firmware images with minimal ROOter extensions for EA3500
 $ make openwrt3500
 ```
 
-The included [Makefile](Makefile) will clone the kirkwood branch of OpenWRT, and build a bin file for the EA4500 / E4200v2 / EA3500. It also adds ROOter addons, so just comment out the .openwrt_rooter target if you don't want those installed. 
+The included [Makefile](Makefile) will clone OpenWRT trunk, and build a bin file for the EA4500 / E4200v2 / EA3500. It also adds ROOter addons (which are useful for 3G/4G USB modems), so just comment out the .openwrt_rooter target if you don't want those installed. 
 
 A tar file is also created to allow system upgrades from an older flashed version (to maintain config).
 
 For more info and discussion about OpenWRT on Candyhouse routers, please see the discussions [here](http://www.wolfteck.com/projects/candyhouse/openwrt/):
-
 
 For more info and discussion about ROOter OpenWRT extensions, please visit:
 
