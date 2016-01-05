@@ -68,7 +68,8 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	@echo CONFIG_TARGET_kirkwood_VIPER=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j1 V=s
+	cd openwrt && make -j1
+	#cd openwrt && make -j1 V=s
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-factory.bin . 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-sysupgrade.tar .
@@ -79,7 +80,7 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	@echo CONFIG_TARGET_kirkwood_AUDI=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j4
+	cd openwrt && make -j1
 
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-audi-squashfs-factory.bin .
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-audi-squashfs-sysupgrade.tar .
