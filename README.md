@@ -6,11 +6,11 @@ _Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys E
 
 Build OpenWRT firmware images with minimal ROOter extensions for EA4500 / E4200v2
 ```bash
-$ make openwrt4500
+$ make viper
 ```
 Build OpenWRT firmware images with minimal ROOter extensions for EA3500
 ```bash
-$ make openwrt3500
+$ make audi
 ```
 
 The included [Makefile](Makefile) will clone OpenWRT trunk, and build a bin file for the EA4500 / E4200v2 / EA3500. It also adds ROOter addons (which are useful for 3G/4G USB modems), so just comment out the .openwrt_rooter target if you don't want those installed. 
