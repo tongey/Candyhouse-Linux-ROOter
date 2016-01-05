@@ -5,14 +5,23 @@ all::
 	@echo
 	@echo "Options:"
 	@echo
-	@echo "make openwrt4500\tBuilds OpenWRT firmware images with minimal ROOter extensions for EA4500 / E4200v2"
+	@echo "make openwrt4500\tBuilds OpenWRT firmware images with minimal ROOter extensions for E4200v2 \ E4200v2"
+	@echo "make openwrt4200\tBuilds OpenWRT firmware images with minimal ROOter extensions for E4200v2 \ E4200v2"
+	@echo "make viper\tBuilds OpenWRT firmware images with minimal ROOter extensions for E4200v2 \ E4200v2"
 	@echo "make openwrt3500\tBuilds OpenWRT firmware images with minimal ROOter extensions for EA3500"
+	@echo "make audi\tBuilds OpenWRT firmware images with minimal ROOter extensions for EA3500"
 	@echo
 
 
 openwrt4500:: openwrt-kirkwood-ea4500
 
+openwrt4200:: openwrt-kirkwood-ea4500
+
+viper:: openwrt-kirkwood-ea4500
+
 openwrt3500:: openwrt-kirkwood-ea3500
+
+audi:: openwrt-kirkwood-ea3500
 
 .openwrt_fetched:
 	#git clone git://git.openwrt.org/15.05/openwrt.git
