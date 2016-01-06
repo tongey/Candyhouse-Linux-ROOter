@@ -21,11 +21,6 @@ openwrt3500:: openwrt-kirkwood-ea3500
 audi:: openwrt-kirkwood-ea3500
 
 .openwrt_fetched:
-	#git clone git://git.openwrt.org/15.05/openwrt.git
-	#git clone -b kirkwood-squashfs https://github.com/leitec/openwrt-staging openwrt
-	#git clone -b kirkwood-linksys https://github.com/leitec/openwrt-staging openwrt
-	
-	# trunk
 	git clone git://git.openwrt.org/openwrt.git openwrt
 	touch $@
 
@@ -37,21 +32,12 @@ audi:: openwrt-kirkwood-ea3500
 
 	cd openwrt && ./scripts/feeds update rooter && ./scripts/feeds install -a -p rooter
 
-	# Only finbarr basic packages like ddns, etc. No ROOter MODs.
-	@echo CONFIG_PACKAGE_ext-finbarr-addons=y >> openwrt/.config
-	
 	# Basic ROOter stuff. Comment these out if you dont need 3G/4G dongle support
 	@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 
 	# Support for Marvell chipset wifi driver
 	@echo CONFIG_PACKAGE_kmod-mwl8k=y >> openwrt/.config
-
-	# These ROOter packages arent really needed
-	#@echo CONFIG_PACKAGE_ext-buttons=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_ext-command=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_ext-rooter=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_ext-rooter8=y >> openwrt/.config
 
 	touch $@
 
@@ -63,9 +49,9 @@ audi:: openwrt-kirkwood-ea3500
 	@echo CONFIG_PACKAGE_luci-app-openvpn=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_openvpn-openssl=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_luci-app-wol=y >> openwrt/.config
-
-	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
+	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
+	@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
+	
 	touch $@
 
 openwrt-kirkwood-ea4500: .openwrt_luci
