@@ -64,8 +64,8 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	#cd openwrt && make -j1 V=s
 
 	mkdir artifacts
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-factory.bin artifacts/
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-viper-squashfs-sysupgrade.tar artifacts/
+	cp openwrt/bin/kirkwood/*.bin artifacts/
+	cp openwrt/bin/kirkwood/*.tar artifacts/
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
@@ -76,8 +76,8 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cd openwrt && make -j1
 
 	mkdir artifacts
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-audi-squashfs-factory.bin artifacts/
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-linksys-audi-squashfs-sysupgrade.tar artifacts/
+	cp openwrt/bin/kirkwood/*.bin artifacts/
+	cp openwrt/bin/kirkwood/*.tar artifacts/
 
 openwrt-clean::
 	rm -rf *.ssa *.bin *.tar
