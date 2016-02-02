@@ -90,9 +90,9 @@ openwrt-tplink-3420: .openwrt_luci
 
 	mkdir artifacts
 	cp openwrt/bin/ar71xx/*factory.bin artifacts/
-	cp openwrt/bin/kirkwood/*factory.tar artifacts/
+	cp openwrt/bin/ar71xx/*factory.tar artifacts/
 	cp openwrt/bin/ar71xx/*upgrade.bin artifacts/
-	cp openwrt/bin/kirkwood/*upgrade.tar artifacts/
+	cp openwrt/bin/ar71xx/*upgrade.tar artifacts/
 
 openwrt-clean::
 	rm -rf *.ssa *.bin *.tar
