@@ -20,6 +20,8 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 audi:: openwrt-kirkwood-ea3500
 
+openwrt3420:: openwrt-tplink-3420
+
 .openwrt_fetched:
 	git clone git://git.openwrt.org/openwrt.git openwrt
 	touch $@
@@ -36,20 +38,17 @@ audi:: openwrt-kirkwood-ea3500
 	@echo CONFIG_PACKAGE_ext-rooter-basic=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_ext-sms=y >> openwrt/.config
 
-	# Support for Marvell chipset wifi driver
-	@echo CONFIG_PACKAGE_kmod-mwl8k=y >> openwrt/.config
-
 	touch $@
 
 .openwrt_luci: .openwrt_config
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
-	cd openwrt && ./scripts/feeds update packages packages && ./scripts/feeds install -a -p packages
+	#cd openwrt && ./scripts/feeds update packages packages && ./scripts/feeds install -a -p packages
 
-	@echo CONFIG_PACKAGE_luci-app-sqm=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_luci-app-sqm=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_luci-app-openvpn=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_openvpn-openssl=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_luci-app-wol=y >> openwrt/.config
-	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_openvpn-openssl=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_luci-app-wol=y >> openwrt/.config
+	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
 	
 	touch $@
@@ -58,10 +57,11 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 
 	@echo CONFIG_TARGET_kirkwood=y >> openwrt/.config
 	@echo CONFIG_TARGET_kirkwood_VIPER=y >> openwrt/.config
+	# Support for Marvell chipset wifi driver
+	@echo CONFIG_PACKAGE_kmod-mwl8k=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j1
-	#cd openwrt && make -j1 V=s
+	cd openwrt && make -j4
 
 	mkdir artifacts
 	cp openwrt/bin/kirkwood/*.bin artifacts/
@@ -71,13 +71,28 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 
 	@echo CONFIG_TARGET_kirkwood=y >> openwrt/.config
 	@echo CONFIG_TARGET_kirkwood_AUDI=y >> openwrt/.config
+	# Support for Marvell chipset wifi driver
+	@echo CONFIG_PACKAGE_kmod-mwl8k=y >> openwrt/.config
 
 	cd openwrt && make defconfig
-	cd openwrt && make -j1
+	cd openwrt && make -j4
 
 	mkdir artifacts
 	cp openwrt/bin/kirkwood/*.bin artifacts/
 	cp openwrt/bin/kirkwood/*.tar artifacts/
+
+openwrt-tplink-3420: .openwrt_luci
+
+	@echo CONFIG_TARGET_ar71xx_generic_TLMR3420=y >> openwrt/.config
+
+	cd openwrt && make defconfig
+	cd openwrt && make -j4
+
+	mkdir artifacts
+	cp openwrt/bin/ar71xx/*factory.bin artifacts/
+	cp openwrt/bin/kirkwood/*factory.tar artifacts/
+	cp openwrt/bin/ar71xx/*upgrade.bin artifacts/
+	cp openwrt/bin/kirkwood/*upgrade.tar artifacts/
 
 openwrt-clean::
 	rm -rf *.ssa *.bin *.tar
