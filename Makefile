@@ -23,7 +23,12 @@ audi:: openwrt-kirkwood-ea3500
 openwrt3420:: openwrt-tplink-3420
 
 .openwrt_fetched:
+	# Use trunk for Linksys
 	git clone git://git.openwrt.org/openwrt.git openwrt
+	
+	# Use 15.05 for 3420
+	#git clone git://git.openwrt.org/15.05/openwrt.git openwrt
+
 	touch $@
 
 .openwrt_config: .openwrt_fetched
@@ -42,13 +47,12 @@ openwrt3420:: openwrt-tplink-3420
 
 .openwrt_luci: .openwrt_config
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
-	#cd openwrt && ./scripts/feeds update packages packages && ./scripts/feeds install -a -p packages
+	cd openwrt && ./scripts/feeds update packages packages && ./scripts/feeds install -a -p packages
 
 	#@echo CONFIG_PACKAGE_luci-app-sqm=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_luci-app-openvpn=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_openvpn-openssl=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_luci-app-wol=y >> openwrt/.config
-	#@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
+	@echo CONFIG_PACKAGE_luci-app-wol=y >> openwrt/.config
+	@echo CONFIG_PACKAGE_luci-mod-rpc=y >> openwrt/.config
 	@echo CONFIG_PACKAGE_luci-app-ddns=y >> openwrt/.config
 	
 	touch $@
@@ -63,9 +67,10 @@ openwrt-kirkwood-ea4500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	mkdir artifacts
+	mkdir -p artifacts
 	cp openwrt/bin/kirkwood/*.bin artifacts/
 	cp openwrt/bin/kirkwood/*.tar artifacts/
+	ls -l artifacts
 
 openwrt-kirkwood-ea3500: .openwrt_luci
 
@@ -77,9 +82,10 @@ openwrt-kirkwood-ea3500: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	mkdir artifacts
+	mkdir -p artifacts
 	cp openwrt/bin/kirkwood/*.bin artifacts/
 	cp openwrt/bin/kirkwood/*.tar artifacts/
+	ls -l artifacts
 
 openwrt-tplink-3420: .openwrt_luci
 
@@ -88,14 +94,13 @@ openwrt-tplink-3420: .openwrt_luci
 	cd openwrt && make defconfig
 	cd openwrt && make -j4
 
-	mkdir artifacts
+	mkdir -p artifacts
 	cp openwrt/bin/ar71xx/*factory.bin artifacts/
-	cp openwrt/bin/ar71xx/*factory.tar artifacts/
 	cp openwrt/bin/ar71xx/*upgrade.bin artifacts/
-	cp openwrt/bin/ar71xx/*upgrade.tar artifacts/
-
+	ls -l artifacts
+	
 openwrt-clean::
-	rm -rf *.ssa *.bin *.tar
+	rm -rf *.ssa *.bin *.tar artifacts
 
 openwrt-distclean: openwrt-clean
 	rm -rf openwrt/ .openwrt*
