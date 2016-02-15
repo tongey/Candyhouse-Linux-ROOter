@@ -20,7 +20,7 @@ openwrt3500:: openwrt-kirkwood-ea3500
 
 audi:: openwrt-kirkwood-ea3500
 
-openwrt3420:: openwrt-tplink-3420-min
+openwrt3420:: openwrt-tplink-3420-min-openvpn
 
 .openwrt_fetched:
 	# Use trunk for Linksys
