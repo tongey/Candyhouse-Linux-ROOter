@@ -100,15 +100,39 @@ openwrt-tplink-3420: .openwrt_luci
 	ls -l artifacts
 
 openwrt-tplink-3420-min:
+
 	git clone git://git.openwrt.org/15.05/openwrt.git openwrt
 	
-	@echo "cp /tmp/mktplinkfw.c openwrt/tools/firmware-utils/src/mktplinkfw.c"
 	cp /tmp/mktplinkfw.c openwrt/tools/firmware-utils/src/mktplinkfw.c
 	
 	@echo "" > openwrt/.config	
 	
 	cp openwrt/feeds.conf.default openwrt/feeds.conf
 	
+	@echo CONFIG_TARGET_ar71xx_generic_TLMR3420=y >> openwrt/.config
+	
+	touch $@
+		
+	cd openwrt && make defconfig
+	cd openwrt && make -j4
+
+	mkdir -p artifacts
+	cp openwrt/bin/ar71xx/*factory.bin artifacts/
+	cp openwrt/bin/ar71xx/*upgrade.bin artifacts/
+	ls -l artifacts
+	
+openwrt-tplink-3420-min-openvpn:
+
+	git clone git://git.openwrt.org/15.05/openwrt.git openwrt
+	
+	cp /tmp/mktplinkfw.c openwrt/tools/firmware-utils/src/mktplinkfw.c
+	
+	@echo "" > openwrt/.config	
+	
+	cp openwrt/feeds.conf.default openwrt/feeds.conf
+	
+	@echo CONFIG_PACKAGE_openvpn-easy-rsa=y >> openwrt/.config 
+	@echo CONFIG_PACKAGE_openvpn-openssl=y >> openwrt/.config 
 	@echo CONFIG_TARGET_ar71xx_generic_TLMR3420=y >> openwrt/.config
 	
 	touch $@
